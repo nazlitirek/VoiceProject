@@ -344,7 +344,7 @@ emotions = {
 users = {}
 # Mikrofon kaydını dinlemek için
 last_prediction_time = 0  # Son tahminin yapıldığı zaman
-prediction_interval = 3  # Her 1.5 saniyede bir tahmin yap
+prediction_interval = 1.5  # Her 1.5 saniyede bir tahmin yap
 
 # Başlangıç sayfası
 @app.route('/')
@@ -476,12 +476,15 @@ def analyze():
         print("\nDuygu Analizi Sonuçları:")
         for emotion, percentage in emotion.items():
             print(f"{emotion}: %{percentage:.2f}")
-            
+        print(f"Duygu Analizi Sonuçları: {emotion}")
+        formatted_emotion = {emotion: f"{percentage:.2f}" for emotion, percentage in emotion.items()}
+        print(f"Duygu Analizi Sonuçları: {formatted_emotion}")
+  
         # Yanıtı döndür
         return jsonify({
             "speaker": "Bilinmiyor",  # Bu route'da konuşmacı tahmini yapılmıyor
             "category": category,
-            "emotion": emotion
+            "emotion" : formatted_emotion
         })
 
     except Exception as e:

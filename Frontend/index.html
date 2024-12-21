@@ -92,6 +92,9 @@
         <h3>Konuşmacı: <span id="speaker">Bekleniyor...</span></h3>
         <h3>Kategori: <span id="category">Bekleniyor...</span></h3>
         <h3>Duygu tahmini <span id="emotion">Bekliyor...</span></h3>
+        <ul id="emotionList">
+            <!-- Duygular dinamik olarak buraya eklenecek -->
+        </ul>
         <h3>Kelime Sayısı: <span id="wordCount">0</span></h3>
     </div>
     <div id="timer"></div>
@@ -327,7 +330,18 @@
                     console.log("Backend yanıtı:", data);
                     speakerSpan.textContent = data.speaker || "Bilinmiyor";
                     categorySpan.textContent = data.category || "Kategori Bulunamadı";
-                    emotionSpan.textContent = data.emotion || "Bilinmiyor";
+                    emotionSpan.innerHTML='';
+                    if (data.emotion) {
+                for (const [emotion, percentage] of Object.entries(data.emotion)) {
+                    const listItem = document.createElement("li");
+                    listItem.textContent = `${emotion}: %${parseFloat(percentage).toFixed(2)}`;
+                    emotionList.appendChild(listItem);
+                }
+            } else {
+                const noEmotionItem = document.createElement("li");
+                noEmotionItem.textContent = "Duygu bulunamadı.";
+                emotionList.appendChild(noEmotionItem);
+            }
                 })
                 .catch(error => {
                     console.error("Backend hatası:", error);
